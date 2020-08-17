@@ -1,0 +1,14 @@
+steps:
+    - name: 'gcr.io/cloud-builders/gradle'
+      entrypoint: 'gradle'
+      args: ['installDist']
+      timeout: 1500s
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/spinnaker/orca', '-f', 'Dockerfile.slim', '.']
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['tag', 'eu.gcr.io/$PROJECT_ID/spinnaker/orca', 'eu.gcr.io/$PROJECT_ID/spinnaker/orca:2.15.2-modified']
+    options:
+        machineType: 'N1_HIGHCPU_8'
+    timeout: 1800s
+    tags: ['2.15.2-modified']
+    images: ['eu.gcr.io/$PROJECT_ID/spinnaker/orca:2.15.2-modified']
